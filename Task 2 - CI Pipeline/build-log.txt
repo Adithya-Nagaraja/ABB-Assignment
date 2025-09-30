@@ -1,0 +1,47 @@
+[2025-10-01 10:00:01] Starting: Checkout Source Code
+[2025-10-01 10:00:03] Checked out branch 'main'
+
+[2025-10-01 10:00:04] Starting: Setup .NET SDK 7.x
+[2025-10-01 10:00:10] .NET SDK 7.0.400 installed
+
+[2025-10-01 10:00:11] Starting: Setup Node.js 18.x
+[2025-10-01 10:00:14] Node.js 18.17.1 installed
+[2025-10-01 10:00:14] npm 9.8.1 installed
+
+[2025-10-01 10:00:15] Starting: Restore .NET packages
+C:\agent\_work\1\s> dotnet restore
+  All projects are up-to-date for restore.
+
+[2025-10-01 10:00:18] Starting: Build .NET Project
+C:\agent\_work\1\s> dotnet build --configuration Release --no-restore
+  SampleApp -> C:\agent\_work\1\s\SampleApp\bin\Release\net7.0\SampleApp.dll
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+[2025-10-01 10:00:22] Starting: Run .NET Unit Tests
+C:\agent\_work\1\s> dotnet test --configuration Release --logger "trx;LogFileName=test-results.trx"
+  Passed SampleApp.Tests.UnitTest1.TestMethod1 [3 ms]
+  Passed SampleApp.Tests.UnitTest2.TestMethod2 [4 ms]
+Test Run Successful.
+Total tests: 2
+     Passed: 2
+ Total time: 1.234 Seconds
+
+[2025-10-01 10:00:27] Starting: Install Node.js Packages
+C:\agent\_work\1\s\NodeApp> npm install
+added 150 packages, and audited 150 packages in 2s
+
+[2025-10-01 10:00:30] Starting: Run Node.js Unit Tests
+C:\agent\_work\1\s\NodeApp> npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=test-results.xml
+  Sample Node Test
+    ✓ should return true [50ms]
+    ✓ should return false [30ms]
+1 passing (80ms)
+Test results saved to NodeApp/test-results.xml
+
+[2025-10-01 10:00:32] Starting: Publish Artifacts
+C:\agent\_work\1\a> Publishing drop artifacts...
+Artifacts published successfully
+
+[2025-10-01 10:00:33] Pipeline completed successfully
