@@ -1,0 +1,5 @@
+variables:
+  environment: 'Test'
+  app_name: 'myapp-test'
+  replica_count: 2
+  image_tag: 'test-latest'
