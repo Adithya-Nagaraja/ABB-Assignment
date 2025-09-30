@@ -1,0 +1,88 @@
+$ terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # azurerm_resource_group.aks_rg will be created
+  + resource "azurerm_resource_group" "aks_rg" {
+      + id       = (known after apply)
+      + location = "eastus"
+      + name     = "rg-aks-demo"
+    }
+
+  # azurerm_log_analytics_workspace.aks_law will be created
+  + resource "azurerm_log_analytics_workspace" "aks_law" {
+      + id                  = (known after apply)
+      + location            = "eastus"
+      + name                = "log-aks-demo"
+      + resource_group_name = "rg-aks-demo"
+      + sku                 = "PerGB2018"
+      + retention_in_days   = 30
+    }
+
+  # azurerm_kubernetes_cluster.aks_cluster will be created
+  + resource "azurerm_kubernetes_cluster" "aks_cluster" {
+      + id                   = (known after apply)
+      + location             = "eastus"
+      + name                 = "aks-demo-cluster"
+      + resource_group_name  = "rg-aks-demo"
+      + dns_prefix           = "aks-demo-cluster-dns"
+      + kube_admin_config    = (sensitive value)
+      + kube_config          = (sensitive value)
+      + node_resource_group  = (known after apply)
+      + identity {
+          + principal_id = (known after apply)
+          + tenant_id    = (known after apply)
+          + type         = "SystemAssigned"
+        }
+      + default_node_pool {
+          + name       = "default"
+          + node_count = 3
+          + vm_size    = "Standard_DS2_v2"
+        }
+      + addon_profile {
+          + oms_agent {
+              + enabled                    = true
+              + log_analytics_workspace_id = "/subscriptions/.../resourceGroups/rg-aks-demo/providers/Microsoft.OperationalInsights/workspaces/log-aks-demo"
+            }
+        }
+      + network_profile {
+          + network_plugin = "azure"
+          + load_balancer_sku = "standard"
+        }
+    }
+
+Plan: 3 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+azurerm_resource_group.aks_rg: Creating...
+azurerm_resource_group.aks_rg: Creation complete after 1s [id=/subscriptions/.../resourceGroups/rg-aks-demo]
+
+azurerm_log_analytics_workspace.aks_law: Creating...
+azurerm_log_analytics_workspace.aks_law: Creation complete after 8s [id=/subscriptions/.../resourceGroups/rg-aks-demo/providers/Microsoft.OperationalInsights/workspaces/log-aks-demo]
+
+azurerm_kubernetes_cluster.aks_cluster: Creating...
+azurerm_kubernetes_cluster.aks_cluster: Still creating... [15s elapsed]
+azurerm_kubernetes_cluster.aks_cluster: Still creating... [45s elapsed]
+azurerm_kubernetes_cluster.aks_cluster: Still creating... [1m30s elapsed]
+azurerm_kubernetes_cluster.aks_cluster: Still creating... [3m0s elapsed]
+azurerm_kubernetes_cluster.aks_cluster: Still creating... [4m0s elapsed]
+azurerm_kubernetes_cluster.aks_cluster: Creation complete after 4m20s [id=/subscriptions/.../resourceGroups/rg-aks-demo/providers/Microsoft.ContainerService/managedClusters/aks-demo-cluster]
+
+Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+aks_cluster_name = "aks-demo-cluster"
+aks_cluster_resource_group = "rg-aks-demo"
+aks_cluster_location = "eastus"
+kube_config = (sensitive value)
+log_analytics_workspace_id = "/subscriptions/.../resourceGroups/rg-aks-demo/providers/Microsoft.OperationalInsights/workspaces/log-aks-demo"
+node_resource_group = "MC_rg-aks-demo_aks-demo-cluster_eastus"
