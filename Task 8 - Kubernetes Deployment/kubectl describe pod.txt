@@ -1,0 +1,37 @@
+Name:         myapp-deployment-5f8d7f9b6d-abc12
+Namespace:    default
+Node:         aks-nodepool1-12345/10.240.0.10
+Start Time:   Wed, 01 Oct 2025 10:00:00 +0000
+Labels:       app=myapp
+Annotations:  <none>
+Status:       Running
+IP:           10.244.1.5
+Containers:
+  myapp-container:
+    Container ID:   docker://abcdef123456
+    Image:          mydockerhubuser/myapp:latest
+    Image ID:       docker-pullable://mydockerhubuser/myapp@sha256:...
+    Port:           80/TCP
+    State:          Running
+      Started:      Wed, 01 Oct 2025 10:00:02 +0000
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:80/healthz delay=15s timeout=1s period=20s
+    Readiness:      http-get http://:80/healthz delay=5s timeout=1s period=10s
+Conditions:
+  Type           Status
+  Initialized    True 
+  Ready          True 
+  ContainersReady True 
+  PodScheduled   True 
+Volumes:        <none>
+QoS Class:      Burstable
+Node-Selectors: <none>
+Tolerations:    <none>
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  5m     default-scheduler  Successfully assigned default/myapp-deployment-5f8d7f9b6d-abc12 to aks-nodepool1-12345
+  Normal  Pulled     5m     kubelet            Container image "mydockerhubuser/myapp:latest" already present on machine
+  Normal  Created    5m     kubelet            Created container myapp-container
+  Normal  Started    5m     kubelet            Started container myapp-container
