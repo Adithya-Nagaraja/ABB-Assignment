@@ -1,0 +1,4 @@
+The push refers to repository mydockeracr.azurecr.io/dockerized-app
+6789abcdef01: Pushed
+123456789abc: Pushed
+1.0: digest: sha256:abcd1234ef5678901234567890abcdef size: 1576
