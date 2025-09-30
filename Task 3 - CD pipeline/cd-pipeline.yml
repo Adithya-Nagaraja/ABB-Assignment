@@ -1,0 +1,61 @@
+trigger:
+  none  # CD triggers manually 
+
+resources:
+  pipelines:
+    - pipeline: ciPipeline
+      source: 'CI-Pipeline'   
+      trigger: true           
+
+stages:
+  - stage: Dev
+    displayName: 'Deploy to Development'
+    jobs:
+      - job: DeployDev
+        displayName: 'Deploy .NET & Node App to Dev'
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - download: ciPipeline
+            artifact: drop
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              appType: 'webApp'
+              appName: 'myapp-dev'
+              package: '$(Pipeline.Workspace)/drop/**/*.zip'
+              deploymentMethod: 'zipDeploy'
+
+          - script: echo "Deployment to Development Completed"
+            displayName: 'Echo Deployment'
+
+  - stage: Production
+    displayName: 'Deploy to Production'
+    dependsOn: Dev
+    approval:
+      approvals:
+        - name: 'Production Approval'
+          type: Manual
+          reviewers:
+            - user1@domain.com
+            - user2@domain.com
+    jobs:
+      - job: DeployProd
+        displayName: 'Deploy .NET & Node App to Production'
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - download: ciPipeline
+            artifact: drop
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Azure-Service-Connection'
+              appType: 'webApp'
+              appName: 'myapp-prod'
+              package: '$(Pipeline.Workspace)/drop/**/*.zip'
+              deploymentMethod: 'zipDeploy'
+
+          - script: echo "Deployment to Production Completed"
+            displayName: 'Echo Deployment'
