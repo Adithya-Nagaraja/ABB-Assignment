@@ -1,0 +1,3 @@
+2025-10-01T10:00:00Z [INFO] Starting myapp server on port 80
+2025-10-01T10:00:01Z [INFO] Health check endpoint /healthz initialized
+2025-10-01T10:00:02Z [INFO] Application ready to accept traffic
