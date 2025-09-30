@@ -1,0 +1,23 @@
+[2025-10-01 11:00:01] Stage: Dev - Deploy to Development
+[2025-10-01 11:00:02] Downloading artifacts from CI pipeline...
+[2025-10-01 11:00:05] Artifacts downloaded successfully.
+
+[2025-10-01 11:00:06] Starting Azure Web App deployment to myapp-dev
+[2025-10-01 11:00:10] Uploading package drop\SampleApp.zip...
+[2025-10-01 11:00:15] Package deployment completed successfully
+[2025-10-01 11:00:16] Deployment verified. Dev app URL: https://myapp-dev.azurewebsites.net
+[2025-10-01 11:00:17] Stage completed: Dev
+
+[2025-10-01 11:05:00] Waiting for Production Approval...
+[2025-10-01 11:06:25] Production Approval granted by user1@domain.com
+
+[2025-10-01 11:06:26] Stage: Production - Deploy to Production
+[2025-10-01 11:06:27] Downloading artifacts from CI pipeline...
+[2025-10-01 11:06:30] Artifacts downloaded successfully.
+
+[2025-10-01 11:06:31] Starting Azure Web App deployment to myapp-prod
+[2025-10-01 11:06:35] Uploading package drop\SampleApp.zip...
+[2025-10-01 11:06:40] Package deployment completed successfully
+[2025-10-01 11:06:41] Deployment verified. Prod app URL: https://myapp-prod.azurewebsites.net
+[2025-10-01 11:06:42] Stage completed: Production
+[2025-10-01 11:06:42] Pipeline execution completed successfully
