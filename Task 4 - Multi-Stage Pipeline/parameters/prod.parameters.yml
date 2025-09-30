@@ -1,0 +1,5 @@
+variables:
+  environment: 'Prod'
+  app_name: 'myapp-prod'
+  replica_count: 5
+  image_tag: 'prod-latest'
