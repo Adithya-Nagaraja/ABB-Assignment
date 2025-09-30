@@ -1,0 +1,4 @@
+NAME                                READY   STATUS    RESTARTS   AGE
+myapp-deployment-5f8d7f9b6d-abc12   1/1     Running   0          2m
+myapp-deployment-5f8d7f9b6d-def34   1/1     Running   0          2m
+myapp-deployment-5f8d7f9b6d-ghi56   1/1     Running   0          2m
