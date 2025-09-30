@@ -1,0 +1,31 @@
+Sending build context to Docker daemon  3.072kB
+Step 1/7 : FROM node:18
+ ---> 2b1b1f1c1234
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Using cache
+ ---> 123456789abc
+Step 3/7 : COPY package*.json ./
+ ---> Using cache
+ ---> 23456789abcd
+Step 4/7 : RUN npm install
+ ---> Running in abcdef123456
+added 6 packages, and audited 6 packages in 2s
+
+3 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Removing intermediate container abcdef123456
+ ---> 3456789abcde
+Step 5/7 : COPY . .
+ ---> 456789abcdef
+Step 6/7 : EXPOSE 3000
+ ---> Running in bcdef1234567
+Removing intermediate container bcdef1234567
+ ---> 56789abcdef0
+Step 7/7 : CMD ["npm", "start"]
+ ---> Running in cdef12345678
+Removing intermediate container cdef12345678
+ ---> 6789abcdef01
+Successfully built 6789abcdef01
+Successfully tagged dockerized-app:1.0
