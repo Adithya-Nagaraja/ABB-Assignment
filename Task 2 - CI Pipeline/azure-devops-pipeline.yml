@@ -1,0 +1,63 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    displayName: 'Build Stage'
+    jobs:
+      - job: Build
+        displayName: 'Build and Test .NET and Node.js'
+        steps:
+          - task: Checkout@1
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '7.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '18.x'
+              checkLatest: true
+
+          - script: dotnet restore
+            displayName: 'Restore .NET packages'
+
+          - script: dotnet build --configuration $(buildConfiguration) --no-restore
+            displayName: 'Build .NET Project'
+
+          - script: dotnet test --configuration $(buildConfiguration) --logger "trx;LogFileName=test-results.trx"
+            displayName: 'Run .NET Unit Tests'
+
+          - script: npm install
+            workingDirectory: ./NodeApp
+            displayName: 'Install Node.js Packages'
+
+          - script: npm test -- --reporter mocha-junit-reporter --reporter-options mochaFile=$(System.DefaultWorkingDirectory)/NodeApp/test-results.xml
+            workingDirectory: ./NodeApp
+            displayName: 'Run Node.js Unit Tests'
+
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFiles: '**/test-results.trx'
+              mergeTestResults: true
+              testRunTitle: '.NET Tests'
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFiles: 'NodeApp/test-results.xml'
+              mergeTestResults: true
+              testRunTitle: 'Node.js Tests'
