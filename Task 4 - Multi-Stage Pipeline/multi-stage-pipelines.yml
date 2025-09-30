@@ -1,0 +1,54 @@
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+  - stage: Dev
+    displayName: 'Deploy to Development'
+    jobs:
+      - job: DeployDev
+        displayName: 'Deploy to Dev'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '3.x'
+          - script: |
+              echo "Deploying to Dev environment"
+              ./scripts/deploy.sh parameters/dev.parameters.yml
+            displayName: 'Deploy Script for Dev'
+
+  - stage: Test
+    displayName: 'Deploy to Test'
+    dependsOn: Dev
+    condition: succeeded()
+    jobs:
+      - job: DeployTest
+        displayName: 'Deploy to Test'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - script: |
+              echo "Deploying to Test environment"
+              ./scripts/deploy.sh parameters/test.parameters.yml
+            displayName: 'Deploy Script for Test'
+
+  - stage: Prod
+    displayName: 'Deploy to Production'
+    dependsOn: Test
+    condition: succeeded()
+    jobs:
+      - job: DeployProd
+        displayName: 'Deploy to Prod'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - script: |
+              echo "Deploying to Production"
+              ./scripts/deploy.sh parameters/prod.parameters.yml
+            displayName: 'Deploy Script for Prod'
