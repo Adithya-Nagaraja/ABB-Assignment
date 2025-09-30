@@ -1,0 +1,36 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  keyVaultName: 'MyAppKeyVault'
+  appName: 'MyAppService'
+  resourceGroup: 'MyResourceGroup'
+
+stages:
+  - stage: Deploy
+    displayName: 'Deploy to Azure App Service'
+    jobs:
+      - job: DeployJob
+        displayName: 'Deploy Job'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'MyAzureServiceConnection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                echo "Starting deployment pipeline..."
+               
+                echo "Retrieving secrets from Key Vault..."
+                DB_PASSWORD=$(az keyvault secret show --name MyDbPassword --vault-name $keyVaultName --query value -o tsv)
+                API_KEY=$(az keyvault secret show --name MyApiKey --vault-name $keyVaultName --query value -o tsv)
+                echo "Secrets retrieved successfully." 
+                
+                echo "Deploying application to $appName..."
+                az webapp config appsettings set --name $appName --resource-group $resourceGroup \
+                  --settings DB_PASSWORD=$DB_PASSWORD API_KEY=$API_KEY
+                echo "Deployment complete."
